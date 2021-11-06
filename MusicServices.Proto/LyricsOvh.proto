@@ -26,6 +26,6 @@ message LyricsOvh_Request {
 
 // A response message containing the lyric informations
 message LyricsOvh_Reply {
-  string lyricFullText = 1;
+  string lyricText = 1;
   int32 lyricWordsCount = 2;
 }
