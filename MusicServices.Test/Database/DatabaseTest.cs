@@ -81,6 +81,8 @@ namespace MusicServices.Test.Database
             //Veryfy row was deleted succesfully
             Assert.IsTrue(inserted == null);
             Assert.IsTrue(database.myStoresLyricsSize() == sizeBeforeInsert);
+
+            database.Dispose();
         }
     }
 }

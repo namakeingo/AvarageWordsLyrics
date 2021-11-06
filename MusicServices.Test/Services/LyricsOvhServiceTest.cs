@@ -72,6 +72,8 @@ namespace MusicServices.Test.Services
 
             Assert.IsTrue(response.LyricText == lyricClean);
             Assert.IsTrue(response.LyricWordsCount == wordCount);
+
+            LyricsOvhService.Database.Dispose();
         }
     }
 }
