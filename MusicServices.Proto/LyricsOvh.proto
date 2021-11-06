@@ -8,7 +8,7 @@ option objc_class_prefix = "LO";
 package LyricsOvh;
 
 // The definiion of the lyric service based on https://api.lyrics.ovh/v1/
-service LyricsOvhService {
+service LyricsOvhProto {
   // Retrieve the lyric of the song using https://api.lyrics.ovh/v1/artist/title
   rpc GetLyric (LyricsOvh_Request) returns (LyricsOvh_Reply) {}
 
@@ -26,6 +26,6 @@ message LyricsOvh_Request {
 
 // A response message containing the lyric informations
 message LyricsOvh_Reply {
-  string lyricsFullText = 1;
-  string lyricsWorldsCount = 2;
+  string lyricFullText = 1;
+  int32 lyricWordsCount = 2;
 }

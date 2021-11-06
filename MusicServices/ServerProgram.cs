@@ -17,7 +17,7 @@ namespace MusicServices
         {
             Server server = new Server
             {
-                Services = { MusicBrainzService.BindService(new MusicBrainzImpl()), LyricsOvhService.BindService(new LyricsOvhImpl()) },
+                Services = { MusicBrainzProto.BindService(new MusicBrainzService()), LyricsOvhProto.BindService(new LyricsOvhService()) },
                 Ports = { new ServerPort("localhost", Port, ServerCredentials.Insecure) }
             };
             server.Start();

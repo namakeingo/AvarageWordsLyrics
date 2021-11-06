@@ -8,7 +8,7 @@ option objc_class_prefix = "MB";
 package MusicBrainz;
 
 // The definition of the music service based on https://musicbrainz.org/ws/2/
-service MusicBrainzService {
+service MusicBrainzProto {
   // Search artist using https://musicbrainz.org/ws/2/artist/
   rpc SearchArtist (MusicBrainz_SearchArtist_Request) returns (MusicBrainz_SearchArtist_Reply) {}
 
