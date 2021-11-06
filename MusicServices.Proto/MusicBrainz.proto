@@ -9,21 +9,21 @@ package MusicBrainz;
 
 // The definition of the music service based on https://musicbrainz.org/ws/2/
 service MusicBrainzProto {
-  // Search artist using https://musicbrainz.org/ws/2/artist/
-  rpc SearchArtist (MusicBrainz_SearchArtist_Request) returns (MusicBrainz_SearchArtist_Reply) {}
+	// Search artist using https://musicbrainz.org/ws/2/artist/
+	rpc SearchArtist (MusicBrainz_SearchArtist_Request) returns (MusicBrainz_SearchArtist_Reply) {}
 
-  // Search recordings by artistID using http://musicbrainz.org/ws/2/recording/
-  rpc SearchArtistSongs (MusicBrainz_SearchArtistSongs_Request) returns (MusicBrainz_SearchArtistSongs_Reply) {}
+	// Search recordings by artistID using http://musicbrainz.org/ws/2/recording/
+	rpc SearchArtistSongs (MusicBrainz_SearchArtistSongs_Request) returns (MusicBrainz_SearchArtistSongs_Reply) {}
 }
 
 // A request message containing the artist name
 message MusicBrainz_SearchArtist_Request {
-  string artistName = 1;
+	string artistName = 1;
 }
 
 // The response message containing artist(s) found
 message MusicBrainz_SearchArtist_Reply {
-  repeated MusicBrainz_Artist artists = 1;
+	repeated MusicBrainz_Artist artists = 1;
 }
 
 // Object definition for MusicBrainz_Artist
@@ -34,17 +34,17 @@ message MusicBrainz_Artist {
 
 // The request message containing the artistID
 message MusicBrainz_SearchArtistSongs_Request {
-  string artistID = 1;
+	string artistID = 1;
+	string artistName = 2;
 }
 
 // The response message containing song(s) found
 message MusicBrainz_SearchArtistSongs_Reply {
-  repeated MusicBrainz_Song songs = 1;
+	repeated MusicBrainz_Song songs = 1;
 }
 
 // Object definition for MusicBrainz_Song
 message MusicBrainz_Song {
-	string songID = 1;
-	string songTitle = 2;
-	string artistName = 3;
+	string songTitle = 1;
+	string artistName = 2;
 }

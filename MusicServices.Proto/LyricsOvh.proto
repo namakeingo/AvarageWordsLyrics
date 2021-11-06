@@ -9,23 +9,23 @@ package LyricsOvh;
 
 // The definiion of the lyric service based on https://api.lyrics.ovh/v1/
 service LyricsOvhProto {
-  // Retrieve the lyric of the song using https://api.lyrics.ovh/v1/artist/title
-  rpc GetLyric (LyricsOvh_Request) returns (LyricsOvh_Reply) {}
+	// Retrieve the lyric of the song using https://api.lyrics.ovh/v1/artist/title
+	rpc GetLyric (LyricsOvh_Request) returns (LyricsOvh_Reply) {}
 
-  // Retrieve the lyric of the song using the database.
-  // If not found in database it is searched using https://api.lyrics.ovh/v1/artist/title
-  // Response is added to the database for the next identical request
-  rpc GetLyricWithDatabaseHelp (LyricsOvh_Request) returns (LyricsOvh_Reply) {}
+	// Retrieve the lyric of the song using the database.
+	// If not found in database it is searched using https://api.lyrics.ovh/v1/artist/title
+	// Response is added to the database for the next identical request
+	rpc GetLyricWithDatabaseHelp (LyricsOvh_Request) returns (LyricsOvh_Reply) {}
 }
 
 // A request message containing the artist name and the song title
 message LyricsOvh_Request {
-  string artistName = 1;
-  string songTitle = 2;
+	string artistName = 1;
+	string songTitle = 2;
 }
 
 // A response message containing the lyric informations
 message LyricsOvh_Reply {
-  string lyricText = 1;
-  int32 lyricWordsCount = 2;
+	string lyricText = 1;
+	int32 lyricWordsCount = 2;
 }

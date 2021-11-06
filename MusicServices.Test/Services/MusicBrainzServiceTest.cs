@@ -65,7 +65,7 @@ namespace MusicServices.Test.Services
         {
             MusicBrainzService service = new MusicBrainzService();
             MusicBrainz.MusicBrainz_SearchArtistSongs_Request request
-                = new MusicBrainz.MusicBrainz_SearchArtistSongs_Request { ArtistID = "a6c6897a-7415-4f8d-b5a5-3a5e05f3be67" };
+                = new MusicBrainz.MusicBrainz_SearchArtistSongs_Request { ArtistID = "a6c6897a-7415-4f8d-b5a5-3a5e05f3be67", ArtistName = "twenty one pilots" };
 
             MusicBrainz.MusicBrainz_SearchArtistSongs_Reply response
                 = service.SearchArtistSongs(request, gRPC.CreateTestContext()).Result;

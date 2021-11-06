@@ -3,25 +3,29 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System;
+using MusicServices.DataContracts.MusicBrainz;
+using System.Net.Http.Headers;
 
 namespace MusicServices.Services.Shared
 {
     public class REST
     {
-        // This method uses the shared instance of HttpClient for every call to GET
+        /// <summary>
+        /// Execure a http GET Request and deserialize response
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="httpClient"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public static async Task<dynamic> Get<T>(HttpClient httpClient, string url)
         {
-            return JsonSerializer.Deserialize<T>(await httpClient.GetStringAsync(url)); ;
-        }
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
 
-        // This method uses the shared instance of HttpClient for every call to POST
-        public static async Task<dynamic> Post<T>(HttpClient httpClient, string url, Dictionary<string, string> data)
-        {
-            var postData = new FormUrlEncodedContent(data);
-
-            var response = await httpClient.PostAsync(url, postData);
-            var responseString = await response.Content.ReadAsStringAsync();
-
+            string responseString = await httpClient.GetStringAsync(url);
             return JsonSerializer.Deserialize<T>(responseString);
         }
     }

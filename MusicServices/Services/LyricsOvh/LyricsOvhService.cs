@@ -18,7 +18,6 @@ namespace MusicServices.Services.LyricsOvh
 
         private static HttpClient httpClient;
         public static LocalStoreDatabase Database; 
-
         public LyricsOvhService()
         {
             httpClient = new HttpClient();
