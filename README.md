@@ -16,10 +16,10 @@ The app is coded following the TDD approach (Red/Green/Refactor).
 # HOW TO RUN
 - Clone the repo to your drive.
 
-- Run .bat script [1# - RunLocalServer.bat](1# - RunLocalServer.bat) and **keep the terminal window open**.
+- Run .bat script [1#-RunLocalServer.bat](1#-RunLocalServer.bat) and **keep the terminal window open**.
 The script will build the solution and the it will host locally the gRPC services. If you close the terminal the server will also stop running.
 
-- Run .bat sript [2# - RunCLIApp.bat](2# - RunCLIApp.bat). 
+- Run .bat sript [2#-RunCLIApp.bat](2#-RunCLIApp.bat). 
 This is the actual CLI App. You can now use the functions presented.
 
 p.s. please be aware that bieig .bat file they could be wrongly detected as malicios by antivirus.
