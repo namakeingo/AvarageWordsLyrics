@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "MusicServices.Proto.LyricsOvh";
+option java_outer_classname = "LyricsOvhProto";
+option objc_class_prefix = "LO";
+
+package LyricsOvh;
+
+// The definiion of the lyric service based on https://api.lyrics.ovh/v1/
+service LyricsOvhService {
+  // Retrieve the lyric of the song using https://api.lyrics.ovh/v1/artist/title
+  rpc GetLyric (LyricsOvh_Request) returns (LyricsOvh_Reply) {}
+
+  // Retrieve the lyric of the song using the database.
+  // If not found in database it is searched using https://api.lyrics.ovh/v1/artist/title
+  // Response is added to the database for the next identical request
+  rpc GetLyricWithDatabaseHelp (LyricsOvh_Request) returns (LyricsOvh_Reply) {}
+}
+
+// A request message containing the artist name and the song title
+message LyricsOvh_Request {
+  string artistName = 1;
+  string songTitle = 2;
+}
+
+// A response message containing the lyric informations
+message LyricsOvh_Reply {
+  string lyricsFullText = 1;
+  string lyricsWorldsCount = 2;
+}

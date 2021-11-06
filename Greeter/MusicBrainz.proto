@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "MusicServices.Proto.MusicBrainz";
+option java_outer_classname = "MusicBrainzProto";
+option objc_class_prefix = "MB";
+
+package MusicBrainz;
+
+// The definition of the music service based on https://musicbrainz.org/ws/2/
+service MusicBrainzService {
+  // Search artist using https://musicbrainz.org/ws/2/artist/
+  rpc SearchArtist (MusicBrainz_SearchArtist_Request) returns (MusicBrainz_SearchArtist_Reply) {}
+
+  // Search recordings by artistID using http://musicbrainz.org/ws/2/recording/
+  rpc SearchArtistSongs (MusicBrainz_SearchArtistSongs_Request) returns (MusicBrainz_SearchArtistSongs_Reply) {}
+}
+
+// A request message containing the artist name
+message MusicBrainz_SearchArtist_Request {
+  string artistName = 1;
+}
+
+// The response message containing artist(s) found
+message MusicBrainz_SearchArtist_Reply {
+  repeated MusicBrainz_Artist artists = 1;
+}
+
+// Object definition for MusicBrainz_Artist
+message MusicBrainz_Artist {
+	string artistID = 1;
+	string artistName = 2;
+}
+
+// The request message containing the artistID
+message MusicBrainz_SearchArtistSongs_Request {
+  string artistID = 1;
+}
+
+// The response message containing song(s) found
+message MusicBrainz_SearchArtistSongs_Reply {
+  repeated MusicBrainz_Song songs = 1;
+}
+
+// Object definition for MusicBrainz_Song
+message MusicBrainz_Song {
+	string songID = 1;
+	string songTitle = 2;
+	string artistName = 3;
+}
