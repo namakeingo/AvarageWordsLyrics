@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using Grpc.Core;
-using System.Linq;
 
 using LyricsOvh;
 using MusicServices.Database;

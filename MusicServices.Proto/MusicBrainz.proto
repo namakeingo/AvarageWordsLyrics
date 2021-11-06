@@ -24,6 +24,8 @@ message MusicBrainz_SearchArtist_Request {
 // The response message containing artist(s) found
 message MusicBrainz_SearchArtist_Reply {
 	repeated MusicBrainz_Artist artists = 1;
+	bool hasError = 2;
+	string errorMessage = 3;
 }
 
 // Object definition for MusicBrainz_Artist
@@ -41,6 +43,8 @@ message MusicBrainz_SearchArtistSongs_Request {
 // The response message containing song(s) found
 message MusicBrainz_SearchArtistSongs_Reply {
 	repeated MusicBrainz_Song songs = 1;
+	bool hasError = 2;
+	string errorMessage = 3;
 }
 
 // Object definition for MusicBrainz_Song

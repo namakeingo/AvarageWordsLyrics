@@ -28,4 +28,6 @@ message LyricsOvh_Request {
 message LyricsOvh_Reply {
 	string lyricText = 1;
 	int32 lyricWordsCount = 2;
+	bool hasError = 3;
+	string errorMessage = 4;
 }

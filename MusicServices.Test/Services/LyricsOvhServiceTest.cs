@@ -9,13 +9,14 @@ namespace MusicServices.Test.Services
 {
     public class LyricsOvhServiceTest
     {
+        public static LyricsOvhService service = new LyricsOvhService();
+
         /// <summary>
         /// Test to get the lyric of a song
         /// </summary>
         [Test]
         public void LyricsOvhTest_GetLyric()
         {
-            LyricsOvhService service = new LyricsOvhService();
             LyricsOvh.LyricsOvh_Request request
                 = new LyricsOvh.LyricsOvh_Request { ArtistName = "twenty one pilots", SongTitle = "Car Radio" };
 
@@ -33,15 +34,45 @@ namespace MusicServices.Test.Services
 
             Assert.IsTrue(response.LyricText == lyricClean);
             Assert.IsTrue(response.LyricWordsCount == wordCount);
+        }
 
-            LyricsOvhService.Database.Dispose();
+        /// <summary>
+        /// Test prevalidation empty for GetLyric()
+        /// </summary>
+        [Test]
+        public void LyricsOvhTest_GetLyric_PreValidation()
+        {
+            LyricsOvh.LyricsOvh_Request request
+                = new LyricsOvh.LyricsOvh_Request { ArtistName = "", SongTitle = "" };
+
+            LyricsOvh.LyricsOvh_Reply response
+                = service.GetLyric(request, gRPC.CreateTestContext()).Result;
+
+            Assert.IsTrue(response.HasError);
+            Assert.IsTrue(response.ErrorMessage == "ArtistName and/or SongTitle should not be empty");
+        }
+
+        /// <summary>
+        /// Test prevalidates url escaping caracters for GetLyricWithDatabaseHelp
+        /// </summary>
+        [Test]
+        public void LyricsOvhTest_GetLyric_CharEscape()
+        {
+            LyricsOvh.LyricsOvh_Request request
+                = new LyricsOvh.LyricsOvh_Request { ArtistName = "SelloRekT / LA Dreams", SongTitle = "Story of Us" };
+
+            LyricsOvh.LyricsOvh_Reply response
+                = service.GetLyric(request, gRPC.CreateTestContext()).Result;
+
+            Assert.IsTrue(response.HasError);
+            Assert.IsTrue(response.ErrorMessage == "Unfortunately api.lyrics.ovh does not supports artist/songs with '\\' or '/' in their name/title");
         }
 
         /// <summary>
         /// Test to get the lyric of a song that we already have in the database
         /// </summary>
         [Test]
-        public void LyricsOvhTest_GetLyric_FromDatabase()
+        public void LyricsOvhTest_GetLyricWithDatabaseHelp()
         {
             string identifier = "LyricsOvhTest_GetLyric_FromDatabase";
 
@@ -59,8 +90,6 @@ namespace MusicServices.Test.Services
             string lyricClean = "LyricsOvhTest_GetLyric_FromDatabase unit test lyric words";
             int wordCount = 5;
 
-            LyricsOvhService service = new LyricsOvhService();
-
             //Add test data to database
             LyricsOvhService.Database.InsertLyric(request, ref test_response);
 
@@ -73,8 +102,38 @@ namespace MusicServices.Test.Services
 
             Assert.IsTrue(response.LyricText == lyricClean);
             Assert.IsTrue(response.LyricWordsCount == wordCount);
+        }
 
-            LyricsOvhService.Database.Dispose();
+        /// <summary>
+        /// Test prevalidation emtpty for GetLyric()
+        /// </summary>
+        [Test]
+        public void LyricsOvhTest_GetLyricWithDatabaseHelp_Empty()
+        {
+            LyricsOvh.LyricsOvh_Request request
+                = new LyricsOvh.LyricsOvh_Request { ArtistName = "", SongTitle = "" };
+
+            LyricsOvh.LyricsOvh_Reply response
+                = service.GetLyricWithDatabaseHelp(request, gRPC.CreateTestContext()).Result;
+
+            Assert.IsTrue(response.HasError);
+            Assert.IsTrue(response.ErrorMessage == "ArtistName and/or SongTitle should not be empty");
+        }
+
+        /// <summary>
+        /// Test prevalidates url escaping caracters for GetLyricWithDatabaseHelp
+        /// </summary>
+        [Test]
+        public void LyricsOvhTest_GetLyricWithDatabaseHelp_CharEscape()
+        {
+            LyricsOvh.LyricsOvh_Request request
+                = new LyricsOvh.LyricsOvh_Request { ArtistName = "SelloRekT / LA Dreams", SongTitle = "Story of Us" };
+
+            LyricsOvh.LyricsOvh_Reply response
+                = service.GetLyricWithDatabaseHelp(request, gRPC.CreateTestContext()).Result;
+
+            Assert.IsTrue(response.HasError);
+            Assert.IsTrue(response.ErrorMessage == "Unfortunately api.lyrics.ovh does not supports artist/songs with '\\' or '/' in their name/title");
         }
     }
 }
