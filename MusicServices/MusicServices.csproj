@@ -17,8 +17,4 @@
     <OutputPath></OutputPath>
   </PropertyGroup>
 
-  <!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="&quot;C:\Program Files\NUnit 2.5.7\bin\net-2.0\nunit.exe&quot; &quot;$(SolutionDir)MusicServices.Test\$(OutDir)MusicServices.Test.dll&quot; /run" />
-  </Target>-->
-
 </Project>

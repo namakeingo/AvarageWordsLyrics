@@ -6,7 +6,7 @@ using MusicBrainz;
 using MusicServices.Services.LyricsOvh;
 using MusicServices.Services.MusicBrainz;
 
-namespace MusicServices
+namespace MusicServices.Host
 {
     class Program
     {
