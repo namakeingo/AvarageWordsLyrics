@@ -32,6 +32,7 @@ namespace MusicServices.Test.Services
 
             int wordCount = words.Count;
 
+            Assert.IsFalse(response.HasError);
             Assert.IsTrue(response.LyricText == lyricClean);
             Assert.IsTrue(response.LyricWordsCount == wordCount);
         }
@@ -100,6 +101,7 @@ namespace MusicServices.Test.Services
             //Remove test data from database
             LyricsOvhService.Database.DeleteLyric(request);
 
+            Assert.IsFalse(response.HasError);
             Assert.IsTrue(response.LyricText == lyricClean);
             Assert.IsTrue(response.LyricWordsCount == wordCount);
         }

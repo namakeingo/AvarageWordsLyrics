@@ -21,6 +21,7 @@ namespace MusicServices.Test.Services
             MusicBrainz.MusicBrainz_SearchArtist_Reply response
                 = service.SearchArtist(request, gRPC.CreateTestContext()).Result;
 
+            Assert.IsFalse(response.HasError);
             Assert.IsTrue(response.Artists.Any(x => x.ArtistID == "b95ce3ff-3d05-4e87-9e01-c97b66af13d4"));
         }
 
@@ -36,6 +37,7 @@ namespace MusicServices.Test.Services
             MusicBrainz.MusicBrainz_SearchArtist_Reply response
                 = service.SearchArtist(request, gRPC.CreateTestContext()).Result;
 
+            Assert.IsFalse(response.HasError);
             Assert.IsTrue(response.Artists.Any(x => x.ArtistID == "a6c6897a-7415-4f8d-b5a5-3a5e05f3be67"));
         }
 
@@ -51,6 +53,7 @@ namespace MusicServices.Test.Services
             MusicBrainz.MusicBrainz_SearchArtist_Reply response
                 = service.SearchArtist(request, gRPC.CreateTestContext()).Result;
 
+            Assert.IsFalse(response.HasError);
             Assert.IsTrue(response.Artists.Any(x => x.ArtistID == "a7bdd428-cd21-4e86-b775-ea54a9629527"));
         }
 
@@ -86,6 +89,7 @@ namespace MusicServices.Test.Services
             MusicBrainz.MusicBrainz_SearchArtistSongs_Reply response
                 = service.SearchArtistSongs(request, gRPC.CreateTestContext()).Result;
 
+            Assert.IsFalse(response.HasError);
             Assert.IsTrue(response.Songs.Any(x => x.SongTitle == "The Pantaloon"));
             Assert.IsTrue(response.Songs.Any(x => x.SongTitle == "Stressed Out"));
             Assert.IsTrue(response.Songs.Any(x => x.SongTitle == "Message Man"));

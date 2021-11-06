@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -25,27 +26,35 @@ namespace MusicServices.Services.MusicBrainz
         {
             MusicBrainz_SearchArtist_Reply reply = new MusicBrainz_SearchArtist_Reply();
 
+            reply = MusicBrainz_Prevalidate(request, reply);
+
             int count = 1;
             //Use offset and count of the api to populate the response with all the rows
-            while (count > reply.Artists.Count)
+            while (count > reply.Artists.Count && !reply.HasError)
             {
                 //Format get request url
                 string requestUrl = string.Format(ARTIST_URL, request.ArtistName, reply.Artists.Count);
 
-                MusicBrainz_Type rawResponse = REST.Get<MusicBrainz_Type>(httpClient, requestUrl).Result;
-                count = rawResponse.count;
-
-                foreach (MusicBrainz_Artist_Type artist in rawResponse.artists)
+                try
                 {
-                    reply.Artists.Add(new MusicBrainz_Artist()
+                    MusicBrainz_Type rawResponse = REST.Get<MusicBrainz_Type>(httpClient, requestUrl).Result;
+                    count = rawResponse.count;
+
+                    foreach (MusicBrainz_Artist_Type artist in rawResponse.artists)
                     {
-                        ArtistID = artist.id,
-                        ArtistName = artist.name
-                    }); 
+                        reply.Artists.Add(new MusicBrainz_Artist()
+                        {
+                            ArtistID = artist.id,
+                            ArtistName = artist.name
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    reply.HasError = true;
+                    reply.ErrorMessage = e.Message;
                 }
             }
-
-            //
 
             return Task.FromResult(reply);
         }
@@ -54,35 +63,60 @@ namespace MusicServices.Services.MusicBrainz
         {
             MusicBrainz_SearchArtistSongs_Reply reply = new MusicBrainz_SearchArtistSongs_Reply();
 
+            reply = MusicBrainz_Prevalidate(request, reply);
+
             int count = 1;
             int offset = 0;
             //Use offset and count of the api to populate the response with all the rows
-            while (count > offset)
+            while (count > offset && !reply.HasError)
             {
                 //Format get request url
                 string requestUrl = string.Format(SONGS_URL, request.ArtistID, offset);
 
-                MusicBrainz_Type rawResponse = REST.Get<MusicBrainz_Type>(httpClient, requestUrl).Result;
-                count = rawResponse.count;
-                
-                foreach(MusicBrainz_Recording_Type song in rawResponse.recordings)
+                try
                 {
-                    offset++;
+                    MusicBrainz_Type rawResponse = REST.Get<MusicBrainz_Type>(httpClient, requestUrl).Result;
+                    count = rawResponse.count;
 
-                    //Only insert if we don't have that song title already.
-                    //The same song can have multiple recordings
-                    if (!reply.Songs.Any(x => x.SongTitle == song.title))
+                    foreach (MusicBrainz_Recording_Type song in rawResponse.recordings)
                     {
-                        reply.Songs.Add(new MusicBrainz_Song()
+                        offset++;
+
+                        //Only insert if we don't have that song title already.
+                        //The same song can have multiple recordings
+                        if (!reply.Songs.Any(x => x.SongTitle == song.title))
                         {
-                            ArtistName = request.ArtistName,
-                            SongTitle = song.title
-                        });
+                            reply.Songs.Add(new MusicBrainz_Song()
+                            {
+                                ArtistName = request.ArtistName,
+                                SongTitle = song.title
+                            });
+                        }
                     }
+                }
+                catch (Exception e)
+                {
+                    reply.HasError = true;
+                    reply.ErrorMessage = e.Message;
                 }
             }
 
             return Task.FromResult(reply);
+        }
+
+        public dynamic MusicBrainz_Prevalidate(dynamic request, dynamic reply)
+        {
+            if (request is MusicBrainz_SearchArtistSongs_Request && request.ArtistID.Length != 36)
+            {
+                reply.HasError = true;
+                reply.ErrorMessage = "ArtistID should always be exactly 36 characters";
+            }
+            else if (request.ArtistName.Length < 3)
+            {
+                reply.HasError = true;
+                reply.ErrorMessage = "ArtistName should be 3 characters long or more";
+            }
+            return reply;
         }
     }
 }

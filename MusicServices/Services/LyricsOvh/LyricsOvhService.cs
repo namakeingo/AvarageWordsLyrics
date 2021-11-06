@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Grpc.Core;
 
@@ -14,7 +15,7 @@ namespace MusicServices.Services.LyricsOvh
         private const string API_BASE_URL = "https://api.lyrics.ovh/v1/{0}/{1}";
 
         private static HttpClient httpClient;
-        public static LocalStoreDatabase Database; 
+        public static LocalStoreDatabase Database;
         public LyricsOvhService()
         {
             httpClient = new HttpClient();
@@ -32,14 +33,26 @@ namespace MusicServices.Services.LyricsOvh
         /// <returns></returns>
         public override Task<LyricsOvh_Reply> GetLyric(LyricsOvh_Request request, ServerCallContext context)
         {
-            //Format get request url
-            string requestUrl = string.Format(API_BASE_URL, request.ArtistName, request.SongTitle);
-
-            LyricsOvh_Type rawResponse = REST.Get<LyricsOvh_Type>(httpClient, requestUrl).Result;
-
             LyricsOvh_Reply reply = new LyricsOvh_Reply();
 
-            Database.RawLyricToCleanReply(rawLyric: rawResponse.lyrics, ref reply);
+            LyricsOvh_Prevalidate(request, ref reply);
+            if (!reply.HasError)
+            {
+                try
+                {
+                    //Format get request url
+                    string requestUrl = string.Format(API_BASE_URL, request.ArtistName, request.SongTitle);
+
+                    LyricsOvh_Type rawResponse = REST.Get<LyricsOvh_Type>(httpClient, requestUrl).Result;
+
+                    Database.RawLyricToCleanReply(rawLyric: rawResponse.lyrics, ref reply);
+                }
+                catch (Exception e)
+                {
+                    reply.HasError = true;
+                    reply.ErrorMessage = e.Message;
+                }
+            }
 
             return Task.FromResult(reply);
         }
@@ -57,23 +70,50 @@ namespace MusicServices.Services.LyricsOvh
         {
             LyricsOvh_Reply reply = new LyricsOvh_Reply();
 
-            StoredLyric? storedLyric = Database.GetLyric(request);
-            if(storedLyric == null)
+            LyricsOvh_Prevalidate(request, ref reply);
+            if (!reply.HasError)
             {
-                //Format get request url
-                string requestUrl = string.Format(API_BASE_URL, request.ArtistName, request.SongTitle);
+                try
+                {
+                    StoredLyric? storedLyric = Database.GetLyric(request);
+                    if (storedLyric == null)
+                    {
+                        //Format get request url
+                        string requestUrl = string.Format(API_BASE_URL, request.ArtistName, request.SongTitle);
 
-                LyricsOvh_Type rawResponse = REST.Get<LyricsOvh_Type>(httpClient, requestUrl).Result;
-                reply.LyricText = rawResponse.lyrics;
+                        LyricsOvh_Type rawResponse = REST.Get<LyricsOvh_Type>(httpClient, requestUrl).Result;
+                        reply.LyricText = rawResponse.lyrics;
 
-                storedLyric = Database.InsertLyric(request, ref reply);
-            }
-            else {
-                reply.LyricText = storedLyric.LyricText;
-                reply.LyricWordsCount = storedLyric.LyricWordsCount;
+                        storedLyric = Database.InsertLyric(request, ref reply);
+                    }
+                    else
+                    {
+                        reply.LyricText = storedLyric.LyricText;
+                        reply.LyricWordsCount = storedLyric.LyricWordsCount;
+                    }
+                }
+                catch (Exception e)
+                {
+                    reply.HasError = true;
+                    reply.ErrorMessage = e.Message;
+                }
             }
 
             return Task.FromResult(reply);
+        }
+
+        public void LyricsOvh_Prevalidate(LyricsOvh_Request request, ref LyricsOvh_Reply reply)
+        {
+            if (request.ArtistName.Contains("/") || request.ArtistName.Contains("\\")
+                || request.SongTitle.Contains("/") || request.SongTitle.Contains("\\"))
+            {
+                reply.HasError = true;
+                reply.ErrorMessage = "Unfortunately api.lyrics.ovh does not supports artist/songs with '\\' or '/' in their name/title";
+            }
+            else if (string.IsNullOrWhiteSpace(request.ArtistName) || string.IsNullOrWhiteSpace(request.SongTitle)){
+                reply.HasError = true;
+                reply.ErrorMessage = "ArtistName and/or SongTitle should not be empty";
+            }
         }
     }
 }
