@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicServices.Server", "MusicServices.Server\MusicServices.Server.csproj", "{8D1AC5FF-6FB2-4CF4-8D9E-A7E6B484B602}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicServices", "MusicServices\MusicServices.csproj", "{8D1AC5FF-6FB2-4CF4-8D9E-A7E6B484B602}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicServices.Test", "MusicServices.Test\MusicServices.Test.csproj", "{B1B474B1-3F10-4398-9205-25A7FF9B5A58}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicServices.Proto", "Greeter\MusicServices.Proto.csproj", "{68242773-A2D3-45B4-B43F-6EE8B37FC8A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicServices.Proto", "MusicServices.Proto\MusicServices.Proto.csproj", "{68242773-A2D3-45B4-B43F-6EE8B37FC8A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

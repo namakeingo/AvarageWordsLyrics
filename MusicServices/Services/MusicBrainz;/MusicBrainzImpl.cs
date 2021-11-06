@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using MusicBrainz;
 
-namespace MusicServices.MusicBrainz
+namespace MusicServices.Services.MusicBrainz
 {
     public class MusicBrainzImpl : MusicBrainzService.MusicBrainzServiceBase
     {

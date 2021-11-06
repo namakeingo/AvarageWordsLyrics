@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Greeter\MusicServices.Proto.csproj" />
+    <ProjectReference Include="..\MusicServices.Proto\MusicServices.Proto.csproj" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

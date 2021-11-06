@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using MusicServices.MusicBrainz;
+using MusicServices.Services.MusicBrainz;
 
-namespace MusicServices.Test.MusicBrainz
+namespace MusicServices.Test.Services
 {
     [TestClass]
     public class MusicBrainzImplTest

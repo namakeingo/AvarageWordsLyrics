@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using LyricsOvh;
 
-namespace MusicServices.LyricsOvh
+namespace MusicServices.Services.LyricsOvh
 {
     class LyricsOvhImpl : LyricsOvhService.LyricsOvhServiceBase
     {
