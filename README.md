@@ -1,0 +1,14 @@
+# Avarage Words Lyrics - CLI App
+
+# Description
+A program that, when given the name of an artist, will produce the average of words per lyric of that author. 
+
+It is written using .NET Core and it follows a service/client structure. 
+The services are developed using gRPC the prodotypo for the services is defined in MusicSetvices.Proto and the implementetion is done in MusicServices.
+
+The services are a used to comunicates with two external APIs: https://musicbrainz.org/ws/2/ and https://api.lyrics.ovh/v1/
+
+In addition to that the LyricsOvcService makes use of a local database that stores the lyrics that were alredy serched. That is usufull given that the https://api.lyrics.ovh/v1/ API is really slow. 
+Given that the lyrics of a song is a constant in make sense to store the response for subsequent calls so that the retrival will be much faster.
+
+# HOW TO RUN
