@@ -41,13 +41,7 @@ namespace MusicServices.Services.LyricsOvh
 
             LyricsOvh_Reply reply = new LyricsOvh_Reply();
 
-            //Get rid of useless parts form the LyricsOvh_Reply
-            reply.LyricText = rawResponse.lyrics.Split("\r\n", 2, StringSplitOptions.RemoveEmptyEntries)[1];
-
-            //Separate and count words
-            string[] separators = { "\n", " ", ",", "'" };
-            List<string> words = reply.LyricText.Split(separators, int.MaxValue, System.StringSplitOptions.RemoveEmptyEntries).ToList();
-            reply.LyricWordsCount = words.Count;
+            Database.RawLyricToCleanReply(rawLyric: rawResponse.lyrics, ref reply);
 
             return Task.FromResult(reply);
         }
