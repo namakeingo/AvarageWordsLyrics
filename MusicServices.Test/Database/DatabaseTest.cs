@@ -6,6 +6,7 @@ namespace MusicServices.Test.Database
 {
     public class DatabaseTest
     {
+#nullable enable
         /// <summary>
         /// Test to get the lyric of a song from the local database
         /// This TestMethod testes the fuctionality to the entire partial LocalStoreDatabase.Lyric
@@ -50,10 +51,10 @@ namespace MusicServices.Test.Database
             inserted = database.GetLyric(test_request);
             //Verify it matches test objects
             Assert.IsTrue(inserted != null);
-            Assert.IsTrue(inserted.ArtistName == test_request.ArtistName);
-            Assert.IsTrue(inserted.SongTitle == test_request.SongTitle);
-            Assert.IsTrue(inserted.LyricText == lyricClean);
-            Assert.IsTrue(inserted.LyricWordsCount == wordsCount);
+            Assert.IsTrue(inserted?.ArtistName == test_request.ArtistName);
+            Assert.IsTrue(inserted?.SongTitle == test_request.SongTitle);
+            Assert.IsTrue(inserted?.LyricText == lyricClean);
+            Assert.IsTrue(inserted?.LyricWordsCount == wordsCount);
 
             //Discard Database and reload from file
             database.Dispose();
@@ -66,10 +67,10 @@ namespace MusicServices.Test.Database
             inserted = null;
             inserted = database.GetLyric(test_request);
             Assert.IsTrue(inserted != null);
-            Assert.IsTrue(inserted.ArtistName == test_request.ArtistName);
-            Assert.IsTrue(inserted.SongTitle == test_request.SongTitle);
-            Assert.IsTrue(inserted.LyricText == lyricClean);
-            Assert.IsTrue(inserted.LyricWordsCount == wordsCount);
+            Assert.IsTrue(inserted?.ArtistName == test_request.ArtistName);
+            Assert.IsTrue(inserted?.SongTitle == test_request.SongTitle);
+            Assert.IsTrue(inserted?.LyricText == lyricClean);
+            Assert.IsTrue(inserted?.LyricWordsCount == wordsCount);
 
             //Remove test lyric
             database.DeleteLyric(test_request);

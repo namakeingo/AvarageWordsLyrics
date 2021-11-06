@@ -24,6 +24,8 @@ namespace MusicServices.Services.LyricsOvh
             Database = new LocalStoreDatabase();
         }
 
+#nullable enable
+
         /// <summary>
         /// Server Side handler of the GetLyrics RPC
         /// Retrieve the lyric of the song using https://api.lyrics.ovh/v1/artist/title

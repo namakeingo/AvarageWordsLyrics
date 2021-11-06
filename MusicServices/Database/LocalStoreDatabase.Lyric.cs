@@ -8,6 +8,7 @@ namespace MusicServices.Database
 {
     public partial class LocalStoreDatabase
     {
+#nullable enable
         /// <summary>
         /// Get the Count property form myStoredLyrics
         /// </summary>
