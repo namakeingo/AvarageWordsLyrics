@@ -11,6 +11,8 @@ The services are a used to comunicates with two external APIs: https://musicbrai
 In addition to that the LyricsOvcService makes use of a local database that stores the lyrics that were alredy serched. That is usufull given that the https://api.lyrics.ovh/v1/ API is really slow. 
 Given that the lyrics of a song is a constant in make sense to store the response for subsequent calls so that the retrival will be much faster.
 
+The app is coded following the TDD approach (Red/Green/Refactor).
+
 # HOW TO RUN
 - Clone the repo to your drive.
 
