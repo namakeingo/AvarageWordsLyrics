@@ -1,10 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 using MusicServices.Database;
 
 namespace MusicServices.Test.Database
 {
-    [TestClass]
     public class DatabaseTest
     {
         /// <summary>
@@ -12,7 +11,7 @@ namespace MusicServices.Test.Database
         /// This TestMethod testes the fuctionality to the entire partial LocalStoreDatabase.Lyric
         /// Get/Insert/Delete are codependent so they cannot be tested separately
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Database_Lyric()
         {
             LocalStoreDatabase database = new LocalStoreDatabase();

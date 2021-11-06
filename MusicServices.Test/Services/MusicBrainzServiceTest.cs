@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System.Linq;
 
 using MusicServices.Test.TestingHelpers;
@@ -6,13 +6,12 @@ using MusicServices.Services.MusicBrainz;
 
 namespace MusicServices.Test.Services
 {
-    [TestClass]
     public class MusicBrainzServiceTest
     {
         /// <summary>
         /// Test to serch artists with a simple artist name
         /// </summary>
-        [TestMethod]
+        [Test]
         public void MusicBrainzTest_SearchArtist()
         {
             MusicBrainzService service = new MusicBrainzService();
@@ -28,7 +27,7 @@ namespace MusicServices.Test.Services
         /// <summary>
         /// Test to serch artists with a artist name that has spaces
         /// </summary>
-        [TestMethod]
+        [Test]
         public void MusicBrainzTest_SearchArtist_WithSpace()
         {
             MusicBrainzService service = new MusicBrainzService();
@@ -44,7 +43,7 @@ namespace MusicServices.Test.Services
         /// <summary>
         /// Test to serch artists with a artist name that has characters that need escaping
         /// </summary>
-        [TestMethod]
+        [Test]
         public void MusicBrainzTest_SearchArtist_WithEscapeChars()
         {
             MusicBrainzService service = new MusicBrainzService();
@@ -60,7 +59,7 @@ namespace MusicServices.Test.Services
         /// <summary>
         /// Test search of songs by artistID
         /// </summary>
-        [TestMethod]
+        [Test]
         public void MusicBrainzTest_SearchArtistSongs()
         {
             MusicBrainzService service = new MusicBrainzService();

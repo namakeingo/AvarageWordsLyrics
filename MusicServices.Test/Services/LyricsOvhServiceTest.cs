@@ -1,4 +1,4 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -7,13 +7,12 @@ using MusicServices.Services.LyricsOvh;
 
 namespace MusicServices.Test.Services
 {
-    [TestClass]
     public class LyricsOvhServiceTest
     {
         /// <summary>
         /// Test to get the lyric of a song
         /// </summary>
-        [TestMethod]
+        [Test]
         public void LyricsOvhTest_GetLyric()
         {
             LyricsOvhService service = new LyricsOvhService();
@@ -41,7 +40,7 @@ namespace MusicServices.Test.Services
         /// <summary>
         /// Test to get the lyric of a song that we already have in the database
         /// </summary>
-        [TestMethod]
+        [Test]
         public void LyricsOvhTest_GetLyric_FromDatabase()
         {
             string identifier = "LyricsOvhTest_GetLyric_FromDatabase";

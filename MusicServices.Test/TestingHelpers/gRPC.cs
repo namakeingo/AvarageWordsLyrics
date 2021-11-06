@@ -3,8 +3,6 @@ using System.Threading;
 using Grpc.Core;
 using Grpc.Core.Testing;
 using Grpc.Core.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace MusicServices.Test.TestingHelpers
 {
