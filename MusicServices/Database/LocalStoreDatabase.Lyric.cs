@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using LyricsOvh;
 
@@ -38,10 +37,12 @@ namespace MusicServices.Database
 		/// <returns>Matching StoredLyric or null</returns>
 		public StoredLyric? InsertLyric(LyricsOvh_Request request, ref LyricsOvh_Reply lyric)
 		{
-			lyric.LyricText = lyric.LyricText.Split(@"\r\n", 2, StringSplitOptions.RemoveEmptyEntries)[1];
-			string[] separators = { @"\n", " ", ",", "'" };
-			List<string> words = lyric.LyricText.Split(separators, int.MaxValue, System.StringSplitOptions.RemoveEmptyEntries).ToList();
+			//get rid of useless parts form the LyricsOvh_Reply
+			lyric.LyricText = lyric.LyricText.Split("\r\n", 2, StringSplitOptions.RemoveEmptyEntries)[1];
 
+			//Separate and count words
+			string[] separators = { "\n", " ", ",", "'" };
+			List<string> words = lyric.LyricText.Split(separators, int.MaxValue, System.StringSplitOptions.RemoveEmptyEntries).ToList();
 			lyric.LyricWordsCount = words.Count;
 
 			myStoredLyrics.Insert(new StoredLyric()

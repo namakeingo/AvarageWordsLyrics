@@ -27,11 +27,11 @@ namespace MusicServices.Test.Database
 
             LyricsOvh.LyricsOvh_Reply test_response = new LyricsOvh.LyricsOvh_Reply()
             {
-                LyricText = @"Part to remove\r\nDatabase_Lyric unit test lyric words"
+                LyricText = "Part to remove\r\nDatabase_Lyric unit test lyric words"
             };
 
             //Clean lyric parameter and words count for assert
-            string lyricClean = @"Database_Lyric unit test lyric words";
+            string lyricClean = "Database_Lyric unit test lyric words";
             int wordsCount = 5;
 
             //Store actual size of the Database lyric table before inserting
