@@ -4,7 +4,8 @@ using Grpc.Core;
 
 using LyricsOvh;
 using MusicBrainz;
-using MusicServices.Services;
+using MusicServices.Services.LyricsOvh;
+using MusicServices.Services.MusicBrainz;
 
 namespace MusicServices
 {
