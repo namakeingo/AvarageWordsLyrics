@@ -1,6 +1,6 @@
 # Avarage Words Lyrics - CLI App
 
-# Description
+## Description
 A program that, when given the name of an artist, will produce the average of words per lyric of that author. 
 
 It is written using .NET Core and it follows a service/client structure. 
@@ -13,13 +13,18 @@ Given that the lyrics of a song is a constant in make sense to store the respons
 
 The app is coded following the TDD approach (Red/Green/Refactor).
 
-# HOW TO RUN
+## HOW TO RUN
+### Option 1:
 - Clone the repo to your drive.
-
-- Run .bat script [1#-RunLocalServer.bat](1#-RunLocalServer.bat) and **keep the terminal window open**.
-The script will build the solution and the it will host locally the gRPC services. If you close the terminal the server will also stop running.
-
-- Run .bat sript [2#-RunCLIApp.bat](2#-RunCLIApp.bat). 
-This is the actual CLI App. You can now use the functions presented.
+- Run .bat script [1#-RunLocalServer.bat](1#-RunLocalServer.bat) and **keep the terminal window open**. The script will build the solution and the it will host locally the gRPC services. If you close the terminal the server will also stop running.
+- Run .bat sript [2#-RunCLIApp.bat](2#-RunCLIApp.bat). This is the actual CLI App. You can now use the functions presented.
 
 p.s. please be aware that bieig .bat file they could be wrongly detected as malicios by antivirus.
+
+### Option 2:
+- Clone the repo to your drive.
+- Open project in Visual Studio
+- Open project properties
+- `Common Properties / Startup Project` check radio button `Multiple tartup projects`
+- Select `Start` on `MusicServices.Client` and `MusicServices.Host` and Apply changes
+- Start Project Exexution
