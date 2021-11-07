@@ -1,4 +1,4 @@
-# Avarage Words Lyrics - CLI App
+# Music Artist Data - CLI App
 
 ## Description
 A program that, when given the name of an artist, will produce the retrieve various statistical information about that artist (average number of words in lyrics, min and max length, total number of songs, etc.)
