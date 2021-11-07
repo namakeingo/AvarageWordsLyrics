@@ -25,6 +25,6 @@ p.s. please be aware that bieig .bat file they could be wrongly detected as mali
 - Clone the repo to your drive.
 - Open project [Music_Artists_Data_CLI.sln](Music_Artists_Data_CLI.sln) in Visual Studio
 - Open project properties
-- `Common Properties / Startup Project` check radio button `Multiple tartup projects`
+- `Common Properties / Startup Project` check radio button `Multiple startup projects`
 - Select `Start` in dropdowns for `MusicServices.Client` and `MusicServices.Host` and Apply changes
 - Start Project Execution
