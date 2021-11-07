@@ -19,41 +19,57 @@ service MusicBrainzProto {
 
 // A request message containing the artist name
 message MusicBrainz_SearchArtist_Request {
-	string artistName = 1;
-	google.protobuf.Int32Value limit = 2;
-	google.protobuf.Int32Value offset = 3;
+	string ArtistName = 1;
+	google.protobuf.Int32Value Limit = 2;
+	google.protobuf.Int32Value Offset = 3;
 }
 
 // The response message containing artist(s) found
 message MusicBrainz_SearchArtist_Reply {
-	repeated MusicBrainz_Artist artists = 1;
-	int32 resultsCount = 2;
-	bool hasError = 3;
-	string errorMessage = 4;
+	repeated MusicBrainz_Artist Artists = 1;
+	int32 ResultsCount = 2;
+	bool HasError = 3;
+	string ErrorMessage = 4;
 }
 
 // Object definition for MusicBrainz_Artist
 message MusicBrainz_Artist {
-	string artistID = 1;
-	string artistName = 2;
+	string ID = 1;
+	string Name = 2;
+	int32 Score = 3;
+	google.protobuf.StringValue Gender = 4;
+	google.protobuf.StringValue Country = 5;
+	google.protobuf.StringValue Disambiguation = 6;
+	MusicBrainz_ArtistTypeEnum Type = 7; 
+}
+
+enum MusicBrainz_ArtistTypeEnum{
+	Person = 0;
+    Group = 1;
+    Orchestra = 2;
+    Choir = 3;
+    Character = 4;
+    Other = 5;
 }
 
 // The request message containing the artistID
 message MusicBrainz_SearchArtistSongs_Request {
-	string artistID = 1;
-	string artistName = 2;
+	string ArtistID = 1;
+	string ArtistName = 2;
 }
 
 // The response message containing song(s) found
 message MusicBrainz_SearchArtistSongs_Reply {
-	repeated MusicBrainz_Song songs = 1;
-	int32 resultsCount = 2;
-	bool hasError = 3;
-	string errorMessage = 4;
+	repeated MusicBrainz_Song Songs = 1;
+	int32 ResultsCount = 2;
+	bool HasError = 3;
+	string ErrorMessage = 4;
 }
 
 // Object definition for MusicBrainz_Song
 message MusicBrainz_Song {
-	string songTitle = 1;
-	string artistName = 2;
+	string Title = 1;
+	int32 Score = 2;
+	int32 Lenght = 3;
+	string ArtistName = 4;
 }

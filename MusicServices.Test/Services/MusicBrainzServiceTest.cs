@@ -22,7 +22,7 @@ namespace MusicServices.Test.Services
                 = service.SearchArtist(request, gRPC.CreateTestContext()).Result;
 
             Assert.IsFalse(response.HasError);
-            Assert.IsTrue(response.Artists.Any(x => x.ArtistID == "b95ce3ff-3d05-4e87-9e01-c97b66af13d4"));
+            Assert.IsTrue(response.Artists.Any(x => x.ID == "b95ce3ff-3d05-4e87-9e01-c97b66af13d4"));
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace MusicServices.Test.Services
                 = service.SearchArtist(request, gRPC.CreateTestContext()).Result;
 
             Assert.IsFalse(response.HasError);
-            Assert.IsTrue(response.Artists.Any(x => x.ArtistID == "a6c6897a-7415-4f8d-b5a5-3a5e05f3be67"));
+            Assert.IsTrue(response.Artists.Any(x => x.ID == "a6c6897a-7415-4f8d-b5a5-3a5e05f3be67"));
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace MusicServices.Test.Services
                 = service.SearchArtist(request, gRPC.CreateTestContext()).Result;
 
             Assert.IsFalse(response.HasError);
-            Assert.IsTrue(response.Artists.Any(x => x.ArtistID == "a7bdd428-cd21-4e86-b775-ea54a9629527"));
+            Assert.IsTrue(response.Artists.Any(x => x.ID == "a7bdd428-cd21-4e86-b775-ea54a9629527"));
         }
 
         /// <summary>
@@ -70,8 +70,8 @@ namespace MusicServices.Test.Services
                 = service.SearchArtist(request, gRPC.CreateTestContext()).Result;
 
             Assert.IsFalse(response.HasError);
-            Assert.IsTrue(response.Artists.Count == 760);
-            Assert.IsTrue(response.Artists.Any(x => x.ArtistID == "6bbccc94-be12-4539-b156-ce37b7fd8342"));
+            Assert.IsTrue(response.Artists.Count == 761);
+            Assert.IsTrue(response.Artists.Any(x => x.ID == "6bbccc94-be12-4539-b156-ce37b7fd8342"));
         }
 
         /// <summary>
@@ -92,8 +92,8 @@ namespace MusicServices.Test.Services
 
             Assert.IsFalse(response.HasError);
             Assert.IsTrue(response.Artists.Count == 50);
-            Assert.IsTrue(response.ResultsCount == 760);
-            Assert.IsTrue(response.Artists.Any(x => x.ArtistID == "57788579-1f66-4ef8-b00d-82ceb20f7998"));
+            Assert.IsTrue(response.ResultsCount == 761);
+            Assert.IsTrue(response.Artists.Any(x => x.ID == "57788579-1f66-4ef8-b00d-82ceb20f7998"));
         }
 
         /// <summary>
@@ -115,8 +115,8 @@ namespace MusicServices.Test.Services
 
             Assert.IsFalse(response.HasError);
             Assert.IsTrue(response.Artists.Count == 50);
-            Assert.IsTrue(response.ResultsCount == 760);
-            Assert.IsTrue(response.Artists.Any(x => x.ArtistID == "5a0d3b07-aa6a-4e45-af1c-7c621d8de8bc"));
+            Assert.IsTrue(response.ResultsCount == 761);
+            Assert.IsTrue(response.Artists.Any(x => x.ID == "5a0d3b07-aa6a-4e45-af1c-7c621d8de8bc"));
         }
 
         /// <summary>
@@ -152,9 +152,9 @@ namespace MusicServices.Test.Services
                 = service.SearchArtistSongs(request, gRPC.CreateTestContext()).Result;
 
             Assert.IsFalse(response.HasError);
-            Assert.IsTrue(response.Songs.Any(x => x.SongTitle == "The Pantaloon"));
-            Assert.IsTrue(response.Songs.Any(x => x.SongTitle == "Stressed Out"));
-            Assert.IsTrue(response.Songs.Any(x => x.SongTitle == "Message Man"));
+            Assert.IsTrue(response.Songs.Any(x => x.Title == "The Pantaloon"));
+            Assert.IsTrue(response.Songs.Any(x => x.Title == "Stressed Out"));
+            Assert.IsTrue(response.Songs.Any(x => x.Title == "Message Man"));
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace MusicServices.Test.Services
             MusicBrainz.MusicBrainz_SearchArtistSongs_Request request
                 = new MusicBrainz.MusicBrainz_SearchArtistSongs_Request
                 {
-                    ArtistID = "b95ce3ff-3d05-wrong-length",
+                    ArtistID = "b95ce3ff-3d05-too-short",
                     ArtistName = "eminem"
                 };
 

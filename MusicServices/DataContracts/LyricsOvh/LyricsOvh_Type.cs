@@ -1,11 +1,10 @@
-﻿using System.Runtime.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace MusicServices.DataContracts.LyricsOvh
 {
-    [DataContract]
     class LyricsOvh_Type
     {
-        [DataMember(Name = "lyrics")]
+        [JsonProperty("lyrics")]
         public string lyrics { get; set; }
     }
 }

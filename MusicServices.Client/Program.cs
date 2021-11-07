@@ -10,7 +10,6 @@ namespace MusicServices.Cliant
     {
         private static Channel channel = new Channel("127.0.0.1:30051", ChannelCredentials.Insecure);
 
-
         /// <summary>
         /// Start of Console App
         /// </summary>
@@ -83,7 +82,7 @@ namespace MusicServices.Cliant
                             for (int i = 0; i < reply.Artists.Count; i++)
                             {
                                 Console.WriteLine(
-                                String.Format("{0} - artist:\"{1}\" - https://musicbrainz.org/artist/{2}", i, reply.Artists[i].ArtistName, reply.Artists[i].ArtistID));
+                                String.Format("{0} - artist:\"{1}\" - https://musicbrainz.org/artist/{2}", i, reply.Artists[i].Name, reply.Artists[i].ID));
                             }
                             //Procees to next section to let the user select form multiple artists
                             SelectFromMultipleArtists(reply);
@@ -140,13 +139,14 @@ namespace MusicServices.Cliant
             Console.WriteLine(
                         String.Format("Selected: {0}artist:\"{1}\" - https://musicbrainz.org/artist/{2}",
                         index.HasValue ? string.Format("{0} - ", index.Value) : "",
-                        artist.ArtistName,
-                        artist.ArtistID));
+                        artist.Name,
+                        artist.ID));
+            Console.WriteLine("Looking for songs. Please wait...");
 
             MusicBrainz_SearchArtistSongs_Request saRequst = new MusicBrainz_SearchArtistSongs_Request()
             {
-                ArtistID = artist.ArtistID,
-                ArtistName = artist.ArtistName
+                ArtistID = artist.ID,
+                ArtistName = artist.Name
             };
 
             var client_MusicBrainz = new MusicBrainzProto.MusicBrainzProtoClient(channel);
@@ -164,16 +164,16 @@ namespace MusicServices.Cliant
                 {
                     case 0:
                         Console.WriteLine(
-                            String.Format("Sorry it looks like MusicBrainz has no songs for: \"{0}\"", artist.ArtistName));
+                            String.Format("Sorry it looks like MusicBrainz has no songs for: \"{0}\"", artist.Name));
                         //will go back to start of outer while loop
                         break;
                     case 1:
                         Console.WriteLine(
-                            String.Format("\n\"{0}\" has only one song titled \"{1}\".", artist.ArtistName, reply.Songs[0].SongTitle));
+                            String.Format("\n\"{0}\" has only one song titled \"{1}\".", artist.Name, reply.Songs[0].Title));
                         break;
                     case > 1:
                         Console.WriteLine(
-                            String.Format("\n\"{0}\" has a total of {1} song.", artist.ArtistName, reply.Songs.Count));
+                            String.Format("\n\"{0}\" has a total of {1} song.", artist.Name, reply.Songs.Count));
                         break;
                 }
             }

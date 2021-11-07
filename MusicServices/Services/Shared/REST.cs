@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using System.Text.Json;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System.Net.Http.Headers;
 
 namespace MusicServices.Services.Shared
@@ -22,7 +23,7 @@ namespace MusicServices.Services.Shared
             httpClient.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
 
             string responseString = await httpClient.GetStringAsync(url);
-            return JsonSerializer.Deserialize<T>(responseString);
+            return JsonConvert.DeserializeObject<T>(responseString);
         }
     }
 }

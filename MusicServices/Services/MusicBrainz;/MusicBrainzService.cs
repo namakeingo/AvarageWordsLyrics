@@ -49,8 +49,13 @@ namespace MusicServices.Services.MusicBrainz
                     {
                         reply.Artists.Add(new MusicBrainz_Artist()
                         {
-                            ArtistID = artist.id,
-                            ArtistName = artist.name
+                            ID = artist.id,
+                            Name = artist.name,
+                            Country = artist.country,
+                            Disambiguation = artist.disambiguation,
+                            Gender = artist.gender,
+                            Score = artist.score,
+                            Type = (MusicBrainz_ArtistTypeEnum)artist.type
                         });
                     }
                 }
@@ -97,12 +102,14 @@ namespace MusicServices.Services.MusicBrainz
 
                         //Only insert if we don't have that song title already.
                         //The same song can have multiple recordings
-                        if (!reply.Songs.Any(x => x.SongTitle == song.title))
+                        if (!reply.Songs.Any(x => x.Title == song.title))
                         {
                             reply.Songs.Add(new MusicBrainz_Song()
                             {
                                 ArtistName = request.ArtistName,
-                                SongTitle = song.title
+                                Title = song.title,
+                                Score = song.score,
+                                Lenght = song.length
                             });
                         }
                     }

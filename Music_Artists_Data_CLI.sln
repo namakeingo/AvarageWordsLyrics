@@ -12,6 +12,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicServices.Host", "MusicServices.Host\MusicServices.Host.csproj", "{54DAB6F6-63F6-4C7D-BED0-B8AD3114BB97}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicServices.Client", "MusicServices.Client\MusicServices.Client.csproj", "{727C44D9-BF72-4510-BEE4-FAD62F1D9F1B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{54DAB6F6-63F6-4C7D-BED0-B8AD3114BB97} = {54DAB6F6-63F6-4C7D-BED0-B8AD3114BB97}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -20,14 +20,14 @@ service LyricsOvhProto {
 
 // A request message containing the artist name and the song title
 message LyricsOvh_Request {
-	string artistName = 1;
-	string songTitle = 2;
+	string ArtistName = 1;
+	string SongTitle = 2;
 }
 
 // A response message containing the lyric informations
 message LyricsOvh_Reply {
-	string lyricText = 1;
-	int32 lyricWordsCount = 2;
-	bool hasError = 3;
-	string errorMessage = 4;
+	string LyricText = 1;
+	int32 LyricWordsCount = 2;
+	bool HasError = 3;
+	string ErrorMessage = 4;
 }
