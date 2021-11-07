@@ -24,7 +24,12 @@ namespace MusicServices.Cliant
             Console.WriteLine("Welcome");
             Console.WriteLine("\nThis Console Application will let you retrieve statistical information about a music artist of your choice.");
             Console.WriteLine("Please be aware that due to the fact that we rely to a slow API the response can be really slow");
-            ArtistInput();
+
+            /// Keep process open
+            while (true)
+            {
+                ArtistInput();
+            }
         }
 
         /// <summary>
@@ -32,18 +37,18 @@ namespace MusicServices.Cliant
         /// </summary>
         private static void ArtistInput()
         {
-            Console.WriteLine("\nPlese type the name of the artist, then press enter to proceed...");
+            Console.WriteLine("\nPlease type the name of the artist, then press enter to proceed...");
             string artistName = Console.ReadLine();
 
             if (string.IsNullOrWhiteSpace(artistName))
             {
                 Console.WriteLine("The artist name should not be Empty or only white spaces");
-                ArtistInput();
+                //will go back to start of outer while loop
             }
             else if (artistName.Length < 3)
             {
                 Console.WriteLine("The artist name should be at least 3 characters long");
-                ArtistInput();
+                //will go back to start of outer while loop
             }
             else
             {
@@ -59,7 +64,7 @@ namespace MusicServices.Cliant
                 {
                     Console.WriteLine("Sorry there was a problem comunicating with MusicBrainz");
                     Console.WriteLine(reply.ErrorMessage);
-                    ArtistInput();
+                    //will go back to start of outer while loop
                 }
                 else
                 {
@@ -68,17 +73,26 @@ namespace MusicServices.Cliant
                         case 0:
                             Console.WriteLine(
                                 String.Format("Sorry it looks like there is no artist in MusicBrainz for: \"{0}\"", artistName));
-                            ArtistInput();
+                            //will go back to start of outer while loop
                             break;
                         case 1:
+                            //Procees to next section
+                            OneArtistSelected(reply.Artists[0]);
                             break;
-                        case > 1:
+                        case <= 50:
                             for (int i = 0; i < reply.Artists.Count; i++)
                             {
                                 Console.WriteLine(
                                 String.Format("{0} - artist:\"{1}\" - https://musicbrainz.org/artist/{2}", i, reply.Artists[i].ArtistName, reply.Artists[i].ArtistID));
                             }
-                            SelectFromMultipleArtists(ref reply);
+                            //Procees to next section to let the user select form multiple artists
+                            SelectFromMultipleArtists(reply);
+                            break;
+                        case > 50:
+                            Console.WriteLine(
+                                String.Format("There are {0} results in MusicBrainz for: \"{1}\"", reply.Artists.Count, artistName));
+                            Console.WriteLine("Please try to be more specific");
+                            //will go back to start of outer while loop
                             break;
                     }
                 }
@@ -89,7 +103,7 @@ namespace MusicServices.Cliant
         /// Section of the console app allowing for selecting betwen multiple artists found from the search
         /// </summary>
         /// <param name="reply"></param>
-        private static void SelectFromMultipleArtists(ref MusicBrainz_SearchArtist_Reply reply)
+        private static void SelectFromMultipleArtists(MusicBrainz_SearchArtist_Reply reply)
         {
             Console.WriteLine("\nType the number corresponding to the desired artist");
             Console.WriteLine("or enter \"start\" to go back...");
@@ -102,23 +116,66 @@ namespace MusicServices.Cliant
             {
                 if (line.ToLower() == "start")
                 {
-                    ArtistInput();
+                    //will go back to start of outer while loop
                 }
                 else if (Int32.TryParse(line, out selectedIndex) && selectedIndex < reply.Artists.Count)
                 {
-                    Console.WriteLine(
-                        String.Format("Selected: {0} - artist:\"{1}\" - https://musicbrainz.org/artist/{2}", selectedIndex, reply.Artists[selectedIndex].ArtistName, reply.Artists[selectedIndex].ArtistID));
+                    OneArtistSelected(reply.Artists[selectedIndex], selectedIndex);
                 }
                 else
                 {
-                    Console.WriteLine(String.Format("\"{0}\" is not a valid input",line));
-                    SelectFromMultipleArtists(ref reply);
+                    Console.WriteLine(String.Format("\"{0}\" is not a valid input", line));
+                    SelectFromMultipleArtists(reply);
                 }
             }
             else
             {
                 Console.WriteLine("Input cannot be empty");
-                SelectFromMultipleArtists(ref reply);
+                SelectFromMultipleArtists(reply);
+            }
+        }
+
+        private static void OneArtistSelected(MusicBrainz_Artist artist, int? index = null)
+        {
+            Console.WriteLine(
+                        String.Format("Selected: {0}artist:\"{1}\" - https://musicbrainz.org/artist/{2}",
+                        index.HasValue ? string.Format("{0} - ", index.Value) : "",
+                        artist.ArtistName,
+                        artist.ArtistID));
+
+            MusicBrainz_SearchArtistSongs_Request saRequst = new MusicBrainz_SearchArtistSongs_Request()
+            {
+                ArtistID = artist.ArtistID,
+                ArtistName = artist.ArtistName
+            };
+
+            var client_MusicBrainz = new MusicBrainzProto.MusicBrainzProtoClient(channel);
+            MusicBrainz_SearchArtistSongs_Reply reply = client_MusicBrainz.SearchArtistSongs(saRequst);
+
+            if (reply.HasError)
+            {
+                Console.WriteLine("Sorry there was a problem comunicating with MusicBrainz");
+                Console.WriteLine(reply.ErrorMessage);
+                //will go back to start of outer while loop
+            }
+            else
+            {
+                switch (reply.Songs.Count)
+                {
+                    case 0:
+                        Console.WriteLine(
+                            String.Format("Sorry it looks like MusicBrainz has no songs for: \"{0}\"", artist.ArtistName));
+                        //will go back to start of outer while loop
+                        break;
+                    case 1:
+                        Console.WriteLine(
+                            String.Format("\n\"{0}\" has only one song titled \"{1}\".", artist.ArtistName, reply.Songs[0].SongTitle));
+                        break;
+                    case > 1:
+                        Console.WriteLine(
+                            String.Format("\n\"{0}\" has a total of {1} song.", artist.ArtistName, reply.Songs.Count));
+                        break;
+                }
             }
         }
     }

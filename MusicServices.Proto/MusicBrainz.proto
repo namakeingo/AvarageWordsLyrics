@@ -4,6 +4,7 @@ option java_multiple_files = true;
 option java_package = "MusicServices.Proto.MusicBrainz";
 option java_outer_classname = "MusicBrainzProto";
 option objc_class_prefix = "MB";
+import "google/protobuf/wrappers.proto";
 
 package MusicBrainz;
 
@@ -19,13 +20,16 @@ service MusicBrainzProto {
 // A request message containing the artist name
 message MusicBrainz_SearchArtist_Request {
 	string artistName = 1;
+	google.protobuf.Int32Value limit = 2;
+	google.protobuf.Int32Value offset = 3;
 }
 
 // The response message containing artist(s) found
 message MusicBrainz_SearchArtist_Reply {
 	repeated MusicBrainz_Artist artists = 1;
-	bool hasError = 2;
-	string errorMessage = 3;
+	int32 resultsCount = 2;
+	bool hasError = 3;
+	string errorMessage = 4;
 }
 
 // Object definition for MusicBrainz_Artist
@@ -43,8 +47,9 @@ message MusicBrainz_SearchArtistSongs_Request {
 // The response message containing song(s) found
 message MusicBrainz_SearchArtistSongs_Reply {
 	repeated MusicBrainz_Song songs = 1;
-	bool hasError = 2;
-	string errorMessage = 3;
+	int32 resultsCount = 2;
+	bool hasError = 3;
+	string errorMessage = 4;
 }
 
 // Object definition for MusicBrainz_Song

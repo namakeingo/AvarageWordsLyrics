@@ -10,7 +10,7 @@ namespace MusicServices.Test.Services
     {
         public static MusicBrainzService service = new MusicBrainzService();
         /// <summary>
-        /// Test to serch artists with a simple artist name
+        /// Test to search artists with a simple artist name
         /// </summary>
         [Test]
         public void MusicBrainzTest_SearchArtist()
@@ -26,7 +26,7 @@ namespace MusicServices.Test.Services
         }
 
         /// <summary>
-        /// Test to serch artists with a artist name that has spaces
+        /// Test to search artists with a artist name that has spaces
         /// </summary>
         [Test]
         public void MusicBrainzTest_SearchArtist_WithSpace()
@@ -42,7 +42,7 @@ namespace MusicServices.Test.Services
         }
 
         /// <summary>
-        /// Test to serch artists with a artist name that has characters that might need escaping
+        /// Test to search artists with a artist name that has characters that might need escaping
         /// </summary>
         [Test]
         public void MusicBrainzTest_SearchArtist_WithEscapeChars()
@@ -55,6 +55,68 @@ namespace MusicServices.Test.Services
 
             Assert.IsFalse(response.HasError);
             Assert.IsTrue(response.Artists.Any(x => x.ArtistID == "a7bdd428-cd21-4e86-b775-ea54a9629527"));
+        }
+
+        /// <summary>
+        /// Test to search artists with a search terms that can trigger "503 (Service Temporarily Unavailable)"
+        /// </summary>
+        [Test]
+        public void MusicBrainzTest_SearchArtist_With503()
+        {
+            MusicBrainz.MusicBrainz_SearchArtist_Request request
+                = new MusicBrainz.MusicBrainz_SearchArtist_Request { ArtistName = "amy" };
+
+            MusicBrainz.MusicBrainz_SearchArtist_Reply response
+                = service.SearchArtist(request, gRPC.CreateTestContext()).Result;
+
+            Assert.IsFalse(response.HasError);
+            Assert.IsTrue(response.Artists.Count == 760);
+            Assert.IsTrue(response.Artists.Any(x => x.ArtistID == "6bbccc94-be12-4539-b156-ce37b7fd8342"));
+        }
+
+        /// <summary>
+        /// Test to search artists with a size limit of 50 and offset of 0
+        /// </summary>
+        [Test]
+        public void MusicBrainzTest_SearchArtist_WithLimit()
+        {
+            MusicBrainz.MusicBrainz_SearchArtist_Request request
+                = new MusicBrainz.MusicBrainz_SearchArtist_Request {
+                    ArtistName = "amy",
+                    Limit = 50,
+                    Offset = 0
+                };
+
+            MusicBrainz.MusicBrainz_SearchArtist_Reply response
+                = service.SearchArtist(request, gRPC.CreateTestContext()).Result;
+
+            Assert.IsFalse(response.HasError);
+            Assert.IsTrue(response.Artists.Count == 50);
+            Assert.IsTrue(response.ResultsCount == 760);
+            Assert.IsTrue(response.Artists.Any(x => x.ArtistID == "57788579-1f66-4ef8-b00d-82ceb20f7998"));
+        }
+
+        /// <summary>
+        /// Test to search artists with a size limit 50 and offset of 100
+        /// </summary>
+        [Test]
+        public void MusicBrainzTest_SearchArtist_WithLimitAndOffset()
+        {
+            MusicBrainz.MusicBrainz_SearchArtist_Request request
+                = new MusicBrainz.MusicBrainz_SearchArtist_Request
+                {
+                    ArtistName = "amy",
+                    Limit = 50,
+                    Offset = 100
+                };
+
+            MusicBrainz.MusicBrainz_SearchArtist_Reply response
+                = service.SearchArtist(request, gRPC.CreateTestContext()).Result;
+
+            Assert.IsFalse(response.HasError);
+            Assert.IsTrue(response.Artists.Count == 50);
+            Assert.IsTrue(response.ResultsCount == 760);
+            Assert.IsTrue(response.Artists.Any(x => x.ArtistID == "5a0d3b07-aa6a-4e45-af1c-7c621d8de8bc"));
         }
 
         /// <summary>

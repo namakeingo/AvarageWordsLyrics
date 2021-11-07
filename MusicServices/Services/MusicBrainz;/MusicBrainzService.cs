@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 
@@ -30,15 +31,19 @@ namespace MusicServices.Services.MusicBrainz
 
             int count = 1;
             //Use offset and count of the api to populate the response with all the rows
-            while (count > reply.Artists.Count && !reply.HasError)
+            while (count > reply.Artists.Count 
+                && (!request.Limit.HasValue || request.Limit > reply.Artists.Count) 
+                && !reply.HasError)
             {
                 //Format get request url
-                string requestUrl = string.Format(ARTIST_URL, request.ArtistName, reply.Artists.Count);
+                string requestUrl = string.Format(ARTIST_URL, request.ArtistName
+                    , reply.Artists.Count + (request.Offset.HasValue ? request.Offset.Value : 0));
 
                 try
                 {
                     MusicBrainz_Type rawResponse = REST.Get<MusicBrainz_Type>(httpClient, requestUrl).Result;
                     count = rawResponse.count;
+                    reply.ResultsCount = count;
 
                     foreach (MusicBrainz_Artist_Type artist in rawResponse.artists)
                     {
@@ -51,8 +56,16 @@ namespace MusicServices.Services.MusicBrainz
                 }
                 catch (Exception e)
                 {
-                    reply.HasError = true;
-                    reply.ErrorMessage = e.Message;
+                    if (e.Message.Contains("503 (Service Temporarily Unavailable)"))
+                    {
+                        //Wait for 500ms before twying to get next page again
+                        Thread.Sleep(500);
+                    }
+                    else
+                    {
+                        reply.HasError = true;
+                        reply.ErrorMessage = e.Message;
+                    }
                 }
             }
 
@@ -96,8 +109,16 @@ namespace MusicServices.Services.MusicBrainz
                 }
                 catch (Exception e)
                 {
-                    reply.HasError = true;
-                    reply.ErrorMessage = e.Message;
+                    if (e.Message.Contains("503 (Service Temporarily Unavailable)"))
+                    {
+                        //Wait for 500 milliseconds before twying to get next page again
+                        Thread.Sleep(500);
+                    }
+                    else
+                    {
+                        reply.HasError = true;
+                        reply.ErrorMessage = e.Message;
+                    }
                 }
             }
 
