@@ -1,7 +1,7 @@
 # Avarage Words Lyrics - CLI App
 
 ## Description
-A program that, when given the name of an artist, will produce the average of words per lyric of that author. 
+A program that, when given the name of an artist, will produce the retrieve various statistical information about that artist (average number of words in lyrics, min and max length, total number of songs, etc.)
 
 It is written using .NET Core and it follows a service/client structure. 
 The services are developed using gRPC the prodotypo for the services is defined in MusicSetvices.Proto and the implementetion is done in MusicServices.
