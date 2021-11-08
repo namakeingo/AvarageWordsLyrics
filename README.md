@@ -1,7 +1,7 @@
 # Music Artist Data - CLI App
 
 ## Description
-A program that, when given the name of an artist, will produce the retrieve various statistical information about that artist (average number of words in lyrics, min and max length, the total number of songs, etc.)
+A program that, when given the name of an artist, will retrieve various statistical information about that artist (average number of words in lyrics, min and max length, the total number of songs, etc.)
 
 It is written using .NET Core and it follows a service/client structure. 
 The services are developed using gRPC the prototype for the services is defined in MusicSetvices.Proto and the implementation is done in MusicServices.
