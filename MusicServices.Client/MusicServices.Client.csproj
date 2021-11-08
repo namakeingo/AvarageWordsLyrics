@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MusicServices.Host\MusicServices.Host.csproj" />
     <ProjectReference Include="..\MusicServices\MusicServices.csproj" />
   </ItemGroup>
 

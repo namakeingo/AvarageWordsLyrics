@@ -23,6 +23,11 @@ namespace MusicServices.Test.Services
 
             Assert.IsFalse(response.HasError);
             Assert.IsTrue(response.Artists.Any(x => x.ID == "b95ce3ff-3d05-4e87-9e01-c97b66af13d4"));
+            var eminem = response.Artists.First(x => x.ID == "b95ce3ff-3d05-4e87-9e01-c97b66af13d4");
+            Assert.IsTrue(eminem.Name == "Eminem");
+            Assert.IsTrue(eminem.Type == MusicBrainz.MusicBrainz_ArtistTypeEnum.Person);
+            Assert.IsTrue(eminem.CountryTwoLetterISO == "US");
+            Assert.IsTrue(eminem.Country == "United States");
         }
 
         /// <summary>
@@ -155,6 +160,9 @@ namespace MusicServices.Test.Services
             Assert.IsTrue(response.Songs.Any(x => x.Title == "The Pantaloon"));
             Assert.IsTrue(response.Songs.Any(x => x.Title == "Stressed Out"));
             Assert.IsTrue(response.Songs.Any(x => x.Title == "Message Man"));
+            Assert.IsNotNull(response.SongsStats);
+            Assert.IsNotNull(response.SongsStats.MaxLengthSong);
+            Assert.IsNotNull(response.SongsStats.MinLengthSong);
         }
 
         /// <summary>

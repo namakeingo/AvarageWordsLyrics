@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.5</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,10 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="LyricsOvh.proto"/>
+    <Protobuf Include="LyricsOvh.proto" />
   </ItemGroup>
   <ItemGroup>
-    <Protobuf Include="MusicBrainz.proto"/>
+    <Protobuf Include="MusicBrainz.proto" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -47,16 +48,26 @@ namespace MusicServices.Services.MusicBrainz
 
                     foreach (MusicBrainz_Artist_Type artist in rawResponse.artists)
                     {
+                        string contry = null;
+                        //Get full contry name from 2 letter ISO
+                        if (!string.IsNullOrWhiteSpace(artist.country))
+                        {
+                            var regions = CultureInfo.GetCultures(CultureTypes.SpecificCultures).Select(x => new RegionInfo(x.LCID));
+                            var region = regions.FirstOrDefault(r => r.TwoLetterISORegionName.Contains(artist.country));
+                            contry = region.EnglishName;
+                        }
+
                         reply.Artists.Add(new MusicBrainz_Artist()
                         {
                             ID = artist.id,
                             Name = artist.name,
-                            Country = artist.country,
+                            CountryTwoLetterISO = artist.country,
+                            Country = contry,
                             Disambiguation = artist.disambiguation,
                             Gender = artist.gender,
                             Score = artist.score,
                             Type = (MusicBrainz_ArtistTypeEnum)artist.type
-                        });
+                        }); ;
                     }
                 }
                 catch (Exception e)
@@ -83,6 +94,12 @@ namespace MusicServices.Services.MusicBrainz
 
             reply = MusicBrainz_Prevalidate(request, reply);
 
+            //Declare variables to calculate Stats
+            int totalLength = 0;
+            int minLength = int.MaxValue;
+            int maxLength = 0;
+            reply.SongsStats = new MusicBrainz_SongsStats();
+
             int count = 1;
             int offset = 0;
             //Use offset and count of the api to populate the response with all the rows
@@ -96,21 +113,33 @@ namespace MusicServices.Services.MusicBrainz
                     MusicBrainz_Type rawResponse = REST.Get<MusicBrainz_Type>(httpClient, requestUrl).Result;
                     count = rawResponse.count;
 
-                    foreach (MusicBrainz_Recording_Type song in rawResponse.recordings)
+                    foreach (MusicBrainz_Recording_Type recording in rawResponse.recordings)
                     {
                         offset++;
 
                         //Only insert if we don't have that song title already.
                         //The same song can have multiple recordings
-                        if (!reply.Songs.Any(x => x.Title == song.title))
+                        if (!reply.Songs.Any(x => x.Title == recording.title))
                         {
-                            reply.Songs.Add(new MusicBrainz_Song()
+                            MusicBrainz_Song song = new MusicBrainz_Song()
                             {
                                 ArtistName = request.ArtistName,
-                                Title = song.title,
-                                Score = song.score,
-                                Lenght = song.length
-                            });
+                                ID = recording.id,
+                                Title = recording.title,
+                                Score = recording.score,
+                                Length = recording.length
+                            };
+                            reply.Songs.Add(song);
+
+                            totalLength = totalLength + song.Length;
+                            if (song.Length > maxLength) {
+                                maxLength = song.Length;
+                                reply.SongsStats.MaxLengthSong = song;
+                            }
+                            if (song.Length < minLength) {
+                                minLength = song.Length;
+                                reply.SongsStats.MinLengthSong = song;
+                            }
                         }
                     }
                 }
@@ -127,6 +156,12 @@ namespace MusicServices.Services.MusicBrainz
                         reply.ErrorMessage = e.Message;
                     }
                 }
+            }
+
+            //Calculate and store avarage length
+            if (reply.Songs.Count != 0)
+            {
+                reply.SongsStats.AvarageLength = totalLength / reply.Songs.Count;
             }
 
             return Task.FromResult(reply);

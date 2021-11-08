@@ -39,8 +39,9 @@ message MusicBrainz_Artist {
 	int32 Score = 3;
 	google.protobuf.StringValue Gender = 4;
 	google.protobuf.StringValue Country = 5;
-	google.protobuf.StringValue Disambiguation = 6;
-	MusicBrainz_ArtistTypeEnum Type = 7; 
+	google.protobuf.StringValue CountryTwoLetterISO = 6;
+	google.protobuf.StringValue Disambiguation = 7;
+	MusicBrainz_ArtistTypeEnum Type = 8; 
 }
 
 enum MusicBrainz_ArtistTypeEnum{
@@ -64,12 +65,21 @@ message MusicBrainz_SearchArtistSongs_Reply {
 	int32 ResultsCount = 2;
 	bool HasError = 3;
 	string ErrorMessage = 4;
+	MusicBrainz_SongsStats SongsStats = 5;
 }
 
 // Object definition for MusicBrainz_Song
 message MusicBrainz_Song {
-	string Title = 1;
-	int32 Score = 2;
-	int32 Lenght = 3;
-	string ArtistName = 4;
+	string ID = 1;
+	string Title = 2;
+	int32 Score = 3;
+	int32 Length = 4;
+	string ArtistName = 5;
+}
+
+// Object definition for MusicBrainz_SongStats
+message MusicBrainz_SongsStats {
+	MusicBrainz_Song MinLengthSong = 1;
+	MusicBrainz_Song MaxLengthSong = 2;
+	int32 AvarageLength = 3;
 }

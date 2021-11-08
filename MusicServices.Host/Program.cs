@@ -10,7 +10,7 @@ namespace MusicServices.Host
 {
     class Program
     {
-        const int Port = 30051;
+        const int Port = 30052;
 
         public static void Main(string[] args)
         {
