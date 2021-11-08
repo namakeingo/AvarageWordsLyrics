@@ -284,16 +284,16 @@ namespace MusicServices.Cliant
         private static void SongsFound(MusicBrainz_SearchArtistSongs_Reply sasReply)
         {
             int avarage;
-            decimal avarageWPM;
             int totalWords = 0;
             int totalLength = 0;
             int maxWords = 0;
             int minWords = int.MaxValue;
             decimal maxWPM = 0;
             decimal minWPM = int.MaxValue;
+            decimal avarageWPM = 0;
             bool hasNoSuccesResponse = true;
 
-            Console.WriteLine(String.Format("\nSearching Lyrics... 0 / {0}\n\n\n\n\n", sasReply.Songs.Count));
+            Console.WriteLine(String.Format("\nSearching Lyrics 0 / {0}\n\n\n\n\n", sasReply.Songs.Count));
             for (int i = 0; i < sasReply.Songs.Count; i++)
             {
                 MusicBrainz_Song song = sasReply.Songs[i];
@@ -304,8 +304,8 @@ namespace MusicServices.Cliant
 
                 if (lReply.HasError && hasNoSuccesResponse)
                 {
-                    Console.WriteLine(String.Format("Searching Lyrics... {0} / {1}\n\nNo lyrics found\n\n\n",
-                        1+i,
+                    Console.WriteLine(String.Format("Searching Lyrics {0} / {1}\n\nNo lyrics found\n\n\n",
+                        1 + i,
                         sasReply.Songs.Count));
                 }
                 else
@@ -316,26 +316,32 @@ namespace MusicServices.Cliant
                     totalWords = totalWords + lReply.LyricWordsCount;
                     totalLength = totalLength + song.Length;
                     avarage = totalWords / (1 + i);
-                    avarageWPM = (decimal)totalWords / ((decimal)totalLength / 1000 / 60);
+                    if (totalLength != 0) //this is an edge case that should never happen
+                    {
+                        avarageWPM = (decimal)totalWords / ((decimal)totalLength / 1000 / 60);
+                    }
                     if (lReply.LyricWordsCount > maxWords)
                     {
                         maxWords = lReply.LyricWordsCount;
-                        //Calculate max words per minute of this song
-                        decimal wpm = (decimal)lReply.LyricWordsCount / ((decimal)song.Length / 1000 / 60);
-                        maxWPM = wpm > maxWPM ? wpm : maxWPM;
                     }
                     if (lReply.LyricWordsCount != 0 && lReply.LyricWordsCount < minWords)
                     {
                         //Ignore 0 for minimum as it is not interesting for this stat
                         minWords = lReply.LyricWordsCount;
-                        //Calculate max words per minute of this song
+                    }
+                    if (song.Length != 0 //this is an edge case that should never happen
+                        && lReply.LyricWordsCount != 0 //Ignore 0 for WPM as it is not interesting for this stat
+                        )
+                    {
+                        //Calculate words per minute of this song
                         decimal wpm = (decimal)lReply.LyricWordsCount / ((decimal)song.Length / 1000 / 60);
+                        maxWPM = wpm > maxWPM ? wpm : maxWPM;
                         minWPM = wpm < minWPM ? wpm : minWPM;
                     }
 
                     //Write line on to of previus lines. Spaces are necessary to overwrite all that was written on that line
                     Console.WriteLine(
-                        String.Format("Searching Lyrics... {0} / {1} ...                              " +
+                        String.Format("Searching Lyrics {0} / {1}                                     " +
                         "\n                                                                           " +
                         "\nLyrics stats:                                                              " +
                         "\nWords avarage is {2} with an avarege words per minute of {3}               " +
@@ -343,8 +349,8 @@ namespace MusicServices.Cliant
                         "\nMax words count is {6} with a maximum words per minute of {7}              ",
                             1 + i,
                             sasReply.Songs.Count,
-                            avarage.ToString("0.00"),
-                            avarageWPM,
+                            avarage,
+                            avarageWPM.ToString("0.00"),
                             minWords,
                             minWPM.ToString("0.00"),
                             maxWords,
